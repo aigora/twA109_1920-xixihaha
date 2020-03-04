@@ -1,10 +1,9 @@
 # Título del trabajo
 
-Descripción breve del proyecto a realizar (2-3 frases).
+caja térmica
 
 ## Integrantes del equipo
-
-Nombres, apellidos, y usuario GitHub de los integrantes del equipo.
+Xiaolong Ruan, RUANNN96
 
 ## Objetivos del trabajo
 
