@@ -26,7 +26,7 @@ Los sensores de temperatura es componentes electrónicos que convierten la tempe
 int green = 5; //fija pin 5 a color verde     
 int red = 8; //fija pin 8 a color rojo   
 
-void setup() {
+void setup() {   
   pinMode(green,OUTPUT);   
   pinMode(red,OUTPUT);   
 }
