@@ -19,3 +19,30 @@ Un zumbador (en inglés: buzzer) es un transductor electroacústico que produce 
 
 Sensor de temperatura.
 Los sensores de temperatura es componentes electrónicos que convierten la temperatura en datos electrónicos. Un sensor de temperatura que utiliza un cuerpo conductor cuya resistencia cambia con la temperatura. El elemento más utilizado es el platino, que tiene una resistencia de 100 ohmios a 0 ° C. Los sensores de temperatura de semiconductores generalmente integran circuitos de amplificación y ajuste. La frecuencia de oscilación de un oscilador de cristal varía con la temperatura, por lo que puede medir la temperatura con mucha precisión.
+
+##subprograma de LED
+int green = 5; //fija pin 5 a color verde
+int red = 8; //fija pin 8 a color rojo
+
+void setup() {
+  pinMode(green,OUTPUT);
+  pinMode(red,OUTPUT);
+}
+
+void loop() {
+
+  //apagar el luz
+  digitalWrite(green, LOW);  
+  digitalWrite(red, LOW);  
+  delay(1000); 
+
+   //LED con el color verde
+  digitalWrite(green, HIGH);  
+  digitalWrite(red, LOW);  
+  delay(1000); 
+
+  //LED con el color rojo
+  digitalWrite(green, LOW);  
+  digitalWrite(red, HIGH);  
+  delay(1000); 
+}
