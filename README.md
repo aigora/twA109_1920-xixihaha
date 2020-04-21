@@ -3,7 +3,7 @@
 caja termometro
 
 ## Integrantes del equipo
-Xiaolong Ruan, Wei Zheng (54911）
+Xiaolong Ruan(54978), Wei Zheng (54911）
 
 ## Objetivos del trabajo
 
