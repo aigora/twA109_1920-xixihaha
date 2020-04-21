@@ -33,18 +33,18 @@ void setup() {
 
 void loop() {
 
-  //apagar el luz
+  //apagar el luz   
   digitalWrite(green, LOW);  
   digitalWrite(red, LOW);  
   delay(1000); 
 
-   //LED con el color verde
+   //LED con el color verde   
   digitalWrite(green, HIGH);  
   digitalWrite(red, LOW);  
   delay(1000); 
 
-  //LED con el color rojo
+  //LED con el color rojo   
   digitalWrite(green, LOW);  
   digitalWrite(red, HIGH);  
-  delay(1000); 
+  delay(1000);   
 }
