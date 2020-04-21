@@ -23,7 +23,8 @@ Los sensores de temperatura es componentes electrónicos que convierten la tempe
 ##subprograma de LED   
 
 
-int green = 5; //fija pin 5 a color verde
+int green = 5; //fija pin 5 a color verde   
+
 int red = 8; //fija pin 8 a color rojo
 
 void setup() {
