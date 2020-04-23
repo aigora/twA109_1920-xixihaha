@@ -48,3 +48,72 @@ void loop() {
   digitalWrite(red, HIGH);  
   delay(1000);   
 }
+
+
+##Zumbador
+
+const int buzzerPin=7;//el zumbador se conecta a 
+
+int fre// definir el variable
+
+void setup()
+
+  {
+  pinMode(buzzerPin,OUTPUT);//establecer buzzerpin como salida
+  
+  }
+ 
+ void loop()
+ 
+ {
+ 
+    for(int i=200;i<=800;i++) //frecuencia pasa de 200 a 800
+    
+    {
+    
+      tone(7,i),
+      
+      delay(5); //espera 5 milisegundos
+  }
+  
+  delay(4000); //espera 4 segundos
+  
+  for(int i=800;i>=200;i--) // frecuencia pasa de 800 a 200
+  
+    
+    {
+    
+      tone(7,i),
+      
+      delay(10); //espera 10 milisegundos
+  }
+  
+  ##Sensor de temperatura
+  
+  const int digitalPin=7; 
+  
+  int analogPin = A0;
+  
+  const int LedPin=13;
+  
+ //las variables cambian
+ 
+ boolean Dstate = 0;
+ 
+ int Astate = 0;
+ 
+ void setup()
+ 
+ {
+  pinMode(ledPin,OUTPUT); //inicializa el LED como salida
+  pinMode(digitalPin,INPUT)
+  Serial.begin(9600);
+  }
+  
+void loop()
+{
+  Astate = analogRead(analogPin);
+  Dstate = digitalRead(digitalPin);
+  Serial.print("D0; ");
+  
+  Serial.prinln(Dstate);
