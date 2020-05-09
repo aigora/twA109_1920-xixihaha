@@ -121,81 +121,81 @@ void loop()
   Serial.prinln(Dstate);
 
 ##PRIMERA VERSIÓN CON ARDUINO
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <LiquidCrystal_I2C.h>
-#include <Wire.h>
-LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
-#define ONE_WIRE_BUS 7 //fija bus dado a pin 7
-
-int green = 5; //fija pin 5 a color verde
-int red = 6; //fija pin 8 a color rojo
-int buzzer = 4; //fija pin 4 a buzzer
-int i;          //variable
-void setup(void)
-{
-  pinMode(green,OUTPUT);
-  pinMode(red,OUTPUT);
-  pinMode(buzzer,OUTPUT);
-  Serial.begin(9600);
-  sensors.begin(); // iniciar el sensor de temperatura
-  lcd.init(); //iniciar el pantalla de lcd
-  lcd.backlight(); //encentar la luz de pantalla
-}
-void loop(void)
-{ 
-  sensors.requestTemperatures(); //Envía el comando para obtener temperaturas
-  lcd.setCursor(0, 0); //fija el posición donde parece primer character
-  lcd.print("TemC: "); //print "Tem: " en lcd
-  lcd.print(sensors.getTempCByIndex(0));//print la temperatura en lcd
+#include <OneWire.h>  
+#include <DallasTemperature.h>  
+#include <LiquidCrystal_I2C.h>  
+#include <Wire.h>  
+LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas  
+OneWire oneWire(ONE_WIRE_BUS);  
+DallasTemperature sensors(&oneWire);  
+#define ONE_WIRE_BUS 7 //fija bus dado a pin 7  
   
-  //Serial.print("Tem: ");
-  //Serial.print(sensors.getTempCByIndex(0));
-  //Serial.println(" C");
-  lcd.print(char(223));//print the unit" ℃ "
-  lcd.print("C");
-
+int green = 5; //fija pin 5 a color verde  
+int red = 6; //fija pin 8 a color rojo  
+int buzzer = 4; //fija pin 4 a buzzer  
+int i;          //variable  
+void setup(void)  
+{  
+  pinMode(green,OUTPUT);  
+  pinMode(red,OUTPUT);  
+  pinMode(buzzer,OUTPUT);  
+  Serial.begin(9600);  
+  sensors.begin(); // iniciar el sensor de temperatura  
+  lcd.init(); //iniciar el pantalla de lcd  
+  lcd.backlight(); //encentar la luz de pantalla  
+}  
+void loop(void)  
+{   
+  sensors.requestTemperatures(); //Envía el comando para obtener temperaturas  
+  lcd.setCursor(0, 0); //fija el posición donde parece primer character  
+  lcd.print("TemC: "); //print "Tem: " en lcd  
+  lcd.print(sensors.getTempCByIndex(0));//print la temperatura en lcd  
   
-  if(sensors.getTempCByIndex(0)>40)
-  {
-    //LED con el color rojo
-     digitalWrite(red, HIGH); 
-     digitalWrite(green, LOW);  
-     delay(1000); 
-     //aviso en pantalla
-     lcd.setCursor(0, 1);
-     lcd.print("Tem inconveniente");
+  //Serial.print("Tem: ");  
+  //Serial.print(sensors.getTempCByIndex(0));  
+  //Serial.println(" C");  
+  lcd.print(char(223));//print the unit" ℃ "  
+  lcd.print("C");  
+
+    
+  if(sensors.getTempCByIndex(0)>40)  
+  {   
+    //LED con el color rojo  
+     digitalWrite(red, HIGH);   
+     digitalWrite(green, LOW);    
+     delay(1000);   
+     //aviso en pantalla  
+     lcd.setCursor(0, 1);  
+     lcd.print("Tem inconveniente");  
       
-      //ouput buzzer
-    for(i=0;i<80;i++)
-    {
-      digitalWrite(buzzer,HIGH);
-      delay(1);//wait for 1ms
-      digitalWrite(buzzer,LOW);
-      delay(1);//wait for 1ms
-    }
-    for(i=0;i<100;i++)
-    {
-      digitalWrite(buzzer,HIGH);
-      delay(2);//wait for 2ms
-      digitalWrite(buzzer,LOW);
-      delay(2);//wait for 2ms
-    }
-   }
+      //ouput buzzer  
+    for(i=0;i<80;i++)  
+    {  
+      digitalWrite(buzzer,HIGH);  
+      delay(1);//espera 1ms 
+      digitalWrite(buzzer,LOW);  
+      delay(1);//espera 1ms 
+    }  
+    for(i=0;i<100;i++)  
+    {   
+      digitalWrite(buzzer,HIGH);  
+      delay(2);//espera 2ms 
+      digitalWrite(buzzer,LOW);  
+      delay(2);//espera 2ms 
+    }  
+   }  
 
  
-  if(sensors.getTempCByIndex(0)<40)
+  if(sensors.getTempCByIndex(0)<40)  
   {
-      //aviso en pantalla
-      lcd.setCursor(0, 1);
-      lcd.print("Tem adecuada");
-       //LED con el color verde
-      digitalWrite(green, HIGH);  
+      //aviso en pantalla  
+      lcd.setCursor(0, 1);  
+      lcd.print("Tem adecuada");  
+       //LED con el color verde  
+      digitalWrite(green, HIGH);    
       digitalWrite(red, LOW);  
-      delay(1000); 
-      //no sona el buzzer
-      digitalWrite(buzzer,HIGH);
-  }
-}
+      delay(1000);   
+      //no sona el buzzer  
+      digitalWrite(buzzer,HIGH);  
+  }  
+}  
