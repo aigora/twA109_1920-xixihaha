@@ -120,7 +120,7 @@ void loop()
   
   Serial.prinln(Dstate);  
 
-##PRIMERA VERSIÓN CON ARDUINO  
+## PRIMERA VERSIÓN CON ARDUINO  
 #include <OneWire.h>  
 #include <DallasTemperature.h>  
 #include <LiquidCrystal_I2C.h>  
