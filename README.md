@@ -114,88 +114,110 @@ void setup()
   
 void loop()
 {
-  Astate = analogRead(analogPin);
-  Dstate = digitalRead(digitalPin);
-  Serial.print("D0; ");
+  Astate = analogRead(analogPin);  
+  Dstate = digitalRead(digitalPin);  
+  Serial.print("D0; ");  
   
-  Serial.prinln(Dstate);
+  Serial.prinln(Dstate);  
 
-##PRIMERA VERSIÓN CON ARDUINO
+##PRIMERA VERSIÓN CON ARDUINO  
 #include <OneWire.h>  
 #include <DallasTemperature.h>  
 #include <LiquidCrystal_I2C.h>  
 #include <Wire.h>  
 LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas  
+#define ONE_WIRE_BUS 7 //fija bus dado a pin 7  
 OneWire oneWire(ONE_WIRE_BUS);  
 DallasTemperature sensors(&oneWire);  
-#define ONE_WIRE_BUS 7 //fija bus dado a pin 7  
-  
+
 int green = 5; //fija pin 5 a color verde  
 int red = 6; //fija pin 8 a color rojo  
 int buzzer = 4; //fija pin 4 a buzzer  
 int i;          //variable  
+char cadena[]="Apagando la caja termica";  
+ char dato;  
 void setup(void)  
 {  
+  Serial.begin(9600);  
   pinMode(green,OUTPUT);  
   pinMode(red,OUTPUT);  
-  pinMode(buzzer,OUTPUT);  
-  Serial.begin(9600);  
+  pinMode(buzzer,OUTPUT);   
   sensors.begin(); // iniciar el sensor de temperatura  
   lcd.init(); //iniciar el pantalla de lcd  
   lcd.backlight(); //encentar la luz de pantalla  
 }  
 void loop(void)  
 {   
-  sensors.requestTemperatures(); //Envía el comando para obtener temperaturas  
-  lcd.setCursor(0, 0); //fija el posición donde parece primer character  
-  lcd.print("TemC: "); //print "Tem: " en lcd  
-  lcd.print(sensors.getTempCByIndex(0));//print la temperatura en lcd  
-  
-  //Serial.print("Tem: ");  
-  //Serial.print(sensors.getTempCByIndex(0));  
-  //Serial.println(" C");  
-  lcd.print(char(223));//print the unit" ℃ "  
-  lcd.print("C");  
-
-    
-  if(sensors.getTempCByIndex(0)>40)  
-  {   
-    //LED con el color rojo  
-     digitalWrite(red, HIGH);   
-     digitalWrite(green, LOW);    
-     delay(1000);   
-     //aviso en pantalla  
-     lcd.setCursor(0, 1);  
-     lcd.print("Tem inconveniente");  
-      
-      //ouput buzzer  
-    for(i=0;i<80;i++)  
+   //no sona el buzzer  
+   digitalWrite(buzzer,HIGH);  
+   if(Serial.available()>0)  
+  {  
+    dato = Serial.read();  
+    if (dato =='1')  
     {  
-      digitalWrite(buzzer,HIGH);  
-      delay(1);//espera 1ms 
-      digitalWrite(buzzer,LOW);  
-      delay(1);//espera 1ms 
-    }  
-    for(i=0;i<100;i++)  
-    {   
-      digitalWrite(buzzer,HIGH);  
-      delay(2);//espera 2ms 
-      digitalWrite(buzzer,LOW);  
-      delay(2);//espera 2ms 
-    }  
-   }  
+      sensors.requestTemperatures(); //Envía el comando para obtener temperaturas  
+      lcd.setCursor(0, 0); //fija el posición donde parece primer character  
+      lcd.print("TemC: "); //print "Tem: " en lcd   
+      lcd.print(sensors.getTempCByIndex(0));//print la temperatura en lcd  
+      lcd.print(char(223));//print the unit" ℃ "  
+      lcd.print("C");  
 
- 
-  if(sensors.getTempCByIndex(0)<40)  
-  {
-      //aviso en pantalla  
-      lcd.setCursor(0, 1);  
-      lcd.print("Tem adecuada");  
-       //LED con el color verde  
-      digitalWrite(green, HIGH);    
-      digitalWrite(red, LOW);  
-      delay(1000);   
-      //no sona el buzzer  
-      digitalWrite(buzzer,HIGH);  
+      Serial.print("Tem: ");  
+      Serial.print(sensors.getTempCByIndex(0));  
+      Serial.println(" C");  
+  
+       if(sensors.getTempCByIndex(0)>40)  
+      {  
+          //LED con el color rojo   
+           digitalWrite(red, HIGH);   
+           digitalWrite(green, LOW);    
+           delay(1000);   
+          //aviso en pantalla  
+           lcd.setCursor(0, 1);  
+           lcd.print("Tem inconveniente");  
+           Serial.println("Temperatura inconveniente");  
+           //ouput buzzer  
+           for(i=0;i<80;i++)  
+          {  
+             digitalWrite(buzzer,HIGH);  
+             delay(1);//espera 1ms  
+             digitalWrite(buzzer,LOW);  
+             delay(1);//espera 1ms  
+          }  
+           for(i=0;i<100;i++)  
+          {  
+             digitalWrite(buzzer,HIGH);  
+             delay(2);//espera 2ms  
+             digitalWrite(buzzer,LOW);  
+             delay(2);//espera 2ms  
+          }  
+       }  
+       if(sensors.getTempCByIndex(0)<40)  
+       {  
+           //aviso en pantalla  
+           lcd.setCursor(0, 1);  
+           lcd.print("Tem adecuada");  
+           Serial.println("Temperatura adecuada");  
+           //LED con el color verde  
+           digitalWrite(green, HIGH);    
+           digitalWrite(red, LOW);    
+           delay(1000);   
+           //no sona el buzzer  
+           digitalWrite(buzzer,HIGH);  
+       }  
+    }  
+       else   
+       if (dato =='0')  
+       {  
+         Serial.println("Apagando la caja termica！");  
+         lcd.clear();  
+         lcd.setCursor(15, 1);  
+         for (i = 0; i < 40; i++)  
+         {  
+           lcd.scrollDisplayLeft();   
+           lcd.print(cadena[i]);    
+           delay(500);    
+         }  
+       }  
   }  
 }  
