@@ -223,68 +223,71 @@ void loop(void)
 }  
 
 
-ULTIMA VERSION 
+   ##ULTIMA VERSION 
 
 
-Codigo en C:
+  Codigo en C:
+  
+  
+  
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "SerialPort.h"
-#define MAX_DATA_LENGTH 255
+     #include <stdio.h>
+     #include <stdlib.h>
+     #include <string.h>
+     #include "SerialPort.h"
+     #define MAX_DATA_LENGTH 255
 
-// Funciones prototipo
-void autoConnect(SerialPort *arduino,char*);
-int main(void)
-{
- //Arduino SerialPort object
- SerialPort *arduino;
- char* portName = "\\\\.\\COM3";
- // Buffer para datos procedentes de Arduino
- char incomingData[MAX_DATA_LENGTH];
+     // Funciones prototipo
+     void autoConnect(SerialPort *arduino,char*);
+     int main(void)
+    {
+     //Arduino SerialPort object
+     SerialPort *arduino;
+    char* portName = "\\\\.\\COM3";
+    // Buffer para datos procedentes de Arduino
+    char incomingData[MAX_DATA_LENGTH];
 
- // Crear estructura de datos del puerto serie
- arduino = (SerialPort *)malloc(sizeof(SerialPort));
- // Apertura del puerto serie
- Crear_Conexion(arduino,portName);
- autoConnect(arduino,incomingData);
- return 0;
-}
-void autoConnect(SerialPort *arduino,char *incomingData)
-{
- char sendData = 0;
+    // Crear estructura de datos del puerto serie
+    arduino = (SerialPort *)malloc(sizeof(SerialPort));
+    // Apertura del puerto serie
+    Crear_Conexion(arduino,portName);
+    autoConnect(arduino,incomingData);
+    return 0;
+      }
+     void autoConnect(SerialPort *arduino,char *incomingData)
+     {
+     char sendData = 0;
 
-   // Espera la conecion con Arduino
-   while (!isConnected(arduino))
-   {
-     Sleep(100);
+     // Espera la conecion con Arduino
+     while (!isConnected(arduino))
+      {
+        Sleep(100);
      Crear_Conexion(arduino,arduino->portName);
-   }
- //Comprueba si arduino est?connectado
-   if (isConnected(arduino))
-   {
-     printf ("Conectado con Arduino en el puerto %s\n",arduino->portName);
-   }
- // Bucle de la aplicacion
-    printf ("0 - CAJA TERMICA OFF, 1 - CAJA TERMICA ON");
+     }
+    //Comprueba si arduino est?connectado
+     if (isConnected(arduino))
+     {
+      printf ("Conectado con Arduino en el puerto %s\n",arduino->portName);
+     }
+     // Bucle de la aplicacion
+       printf ("0 - CAJA TERMICA OFF, 1 - CAJA TERMICA ON");
     while (isConnected(arduino) && sendData!='9')
-   {
+      {
     sendData = getch();
-    writeSerialPort(arduino,&sendData, sizeof(char));
-   }
-    if (!isConnected(arduino))
-    printf ("Se ha perdido la conecion con Arduino\n");
-}
+       writeSerialPort(arduino,&sendData, sizeof(char));
+        }
+         if (!isConnected(arduino))
+         printf ("Se ha perdido la conecion con Arduino\n");
+     }
 
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "SerialPort.h"
+      #include <stdio.h>
+      #include <stdlib.h>
+     #include "SerialPort.h"
 
-void Crear_Conexion(SerialPort *PuertoSerie, char *portName)
-{
+     void Crear_Conexion(SerialPort *PuertoSerie, char *portName)
+       {
 
 	PuertoSerie->connected = 0;
 	PuertoSerie->portName = portName;
@@ -335,19 +338,19 @@ void Crear_Conexion(SerialPort *PuertoSerie, char *portName)
         }
     }
     return ;
-}
+      }
 
-void CerrarConexion(SerialPort * PuertoSerie)
-{
-    if (PuertoSerie->connected)
+     void CerrarConexion(SerialPort * PuertoSerie)
+     {
+      if (PuertoSerie->connected)
 	{
         PuertoSerie->connected = 0;
         CloseHandle(PuertoSerie->handler);
     }
-}
+     }
 
-int readSerialPort(SerialPort * PuertoSerie,char *buffer, unsigned int buf_size)
-{
+     int readSerialPort(SerialPort * PuertoSerie,char *buffer, unsigned int buf_size)
+       {
     DWORD bytesRead;
     unsigned int toRead = 0;
 
@@ -367,11 +370,11 @@ int readSerialPort(SerialPort * PuertoSerie,char *buffer, unsigned int buf_size)
     if (ReadFile(PuertoSerie->handler, buffer, toRead, &bytesRead, NULL)) return bytesRead;
 
     return 0;
-}
+    }
 
-int writeSerialPort(SerialPort *PuertoSerie,char *buffer, unsigned int buf_size)
-{
-    DWORD bytesSend;
+      int writeSerialPort(SerialPort *PuertoSerie,char *buffer, unsigned int buf_size)
+      {
+      DWORD bytesSend;
 
     if (!WriteFile(PuertoSerie->handler, (void*) buffer, buf_size, &bytesSend, 0))
 	{
@@ -379,45 +382,49 @@ int writeSerialPort(SerialPort *PuertoSerie,char *buffer, unsigned int buf_size)
         return 0;
     }
     else return 1;
-}
+     }
 
-int isConnected(SerialPort *PuertoSerie)
-{
-    if (!ClearCommError(PuertoSerie->handler, &PuertoSerie->errors, &PuertoSerie->status))
+     int isConnected(SerialPort *PuertoSerie)
+     {
+         if (!ClearCommError(PuertoSerie->handler, &PuertoSerie->errors, &PuertoSerie->status))
 		PuertoSerie->connected = 0;
     return PuertoSerie->connected;
-}
+    }
 
 
 Codigo en arduino:
 modo 1:
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <LiquidCrystal_I2C.h>
-#include <Wire.h>
-LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas
-#define ONE_WIRE_BUS 7 //fija bus dado a pin 7
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
 
-int green = 5; //fija pin 5 a color verde
-int red = 6; //fija pin 8 a color rojo
-int buzzer = 4; //fija pin 4 a buzzer
-int i,j;          //variable
-void setup(void)
-{
-  Serial.begin(9600);
-  pinMode(green,OUTPUT);
-  pinMode(red,OUTPUT);
-  pinMode(buzzer,OUTPUT);
-  sensors.begin(); // iniciar el sensor de temperatura
-  lcd.init(); //iniciar el pantalla de lcd
-  lcd.backlight(); //encentar la luz de pantalla
-}
-void loop(void)
-{ 
-   //no sona el buzzer
-   digitalWrite(buzzer,HIGH);
+
+
+   
+      #include <OneWire.h>
+      #include <DallasTemperature.h>
+      #include <LiquidCrystal_I2C.h>
+      #include <Wire.h>
+      LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas
+      #define ONE_WIRE_BUS 7 //fija bus dado a pin 7
+      OneWire oneWire(ONE_WIRE_BUS);
+      DallasTemperature sensors(&oneWire);
+
+      int green = 5; //fija pin 5 a color verde
+      int red = 6; //fija pin 8 a color rojo
+      int buzzer = 4; //fija pin 4 a buzzer
+      int i,j;          //variable
+     void setup(void)
+     {
+     Serial.begin(9600);
+      pinMode(green,OUTPUT);
+     pinMode(red,OUTPUT);
+     pinMode(buzzer,OUTPUT);
+     sensors.begin(); // iniciar el sensor de temperatura
+     lcd.init(); //iniciar el pantalla de lcd
+     lcd.backlight(); //encentar la luz de pantalla
+      }
+     void loop(void)
+      { 
+           //no sona el buzzer
+                digitalWrite(buzzer,HIGH);
    
       sensors.requestTemperatures(); //Envía el comando para obtener temperaturas
       lcd.setCursor(0, 0); //fija el posición donde parece primer character
@@ -473,46 +480,58 @@ void loop(void)
            digitalWrite(buzzer,HIGH);
        }
   
-}
+     }
 
 
-modo 2:
+modo semiautomatico:
 
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <LiquidCrystal_I2C.h>
-#include <Wire.h>
-LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas
-#define ONE_WIRE_BUS 7 //fija bus dado a pin 7
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
 
-int green = 5; //fija pin 5 a color verde
-int red = 6; //fija pin 8 a color rojo
-int buzzer = 4; //fija pin 4 a buzzer
-int i,j;          //variable
-char cadena[]="Apagando la caja termica";
-void setup(void)
-{
-  Serial.begin(9600);
-  pinMode(green,OUTPUT);
-  pinMode(red,OUTPUT);
-  pinMode(buzzer,OUTPUT);
-  sensors.begin(); // iniciar el sensor de temperatura
-  lcd.init(); //iniciar el pantalla de lcd
-  lcd.backlight(); //encentar la luz de pantalla
-}
-void loop(void)
-{ 
-  char dato;
-   //no sona el buzzer
-   digitalWrite(buzzer,HIGH);
-   if(Serial.available()>0)
-  {
+
+
+
+      #include <OneWire.h>
+
+
+      #include <DallasTemperature.h>
+      #include <LiquidCrystal_I2C.h>
+     #include <Wire.h>
+      LiquidCrystal_I2C lcd(0x27,16,2);  // configure la dirección LCD en 0x27 y 0x3F para una pantalla de 16 caracteres y 2 líneas
+     #define ONE_WIRE_BUS 7 //fija bus dado a pin 7
+     OneWire oneWire(ONE_WIRE_BUS);
+     DallasTemperature sensors(&oneWire);
+
+     int green = 5; //fija pin 5 a color verde
+      int red = 6; //fija pin 8 a color rojo
+      int buzzer = 4; //fija pin 4 a buzzer
+     int i,j;          //variable
+      char cadena[]="Apagando la caja termica";
+     void setup(void)
+     {
+     Serial.begin(9600);
+    pinMode(green,OUTPUT);
+    pinMode(red,OUTPUT);
+    pinMode(buzzer,OUTPUT);
+    sensors.begin(); // iniciar el sensor de temperatura
+    lcd.init(); //iniciar el pantalla de lcd
+      lcd.backlight(); //encentar la luz de pantalla
+    }
+      void loop(void)
+    { 
+      char dato;
+
+    //no sona el buzzer
+ 
+     digitalWrite(buzzer,HIGH);
+   
+     if(Serial.available()>0)
+    {
+  
     dato = Serial.read();
     if (dato =='1')
     {
-      lcd.backlight(); 
+    
+      lcd.backlight();
+      
       lcd.clear();
       sensors.requestTemperatures(); //Envía el comando para obtener temperaturas
       lcd.setCursor(0, 0); //fija el posición donde parece primer character
@@ -588,4 +607,4 @@ void loop(void)
          lcd.noBacklight();
        }
   }
-}
+   }
